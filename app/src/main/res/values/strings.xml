@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MyFirstApplication</string>
+    <string name="change_hello_world">Hello I am learning android development!</string>
 </resources>
