@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 
 class CustomAdapter(val tasksList:ArrayList<Task>): RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomAdapter.ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_item, parent, false)
         return ViewHolder(v)
@@ -16,6 +15,7 @@ class CustomAdapter(val tasksList:ArrayList<Task>): RecyclerView.Adapter<CustomA
 
     override fun onBindViewHolder(holder: CustomAdapter.ViewHolder, position: Int) {
         holder.bindItems(tasksList[position])
+
     }
 
     override fun getItemCount(): Int {
@@ -31,6 +31,10 @@ class CustomAdapter(val tasksList:ArrayList<Task>): RecyclerView.Adapter<CustomA
             textViewTaskDescription.text = task.taskDescription
         }
 
+    }
+
+    fun addTask(){
+        notifyDataSetChanged()
     }
 
 
