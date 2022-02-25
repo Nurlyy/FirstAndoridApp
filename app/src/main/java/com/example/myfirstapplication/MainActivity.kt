@@ -1,5 +1,6 @@
 package com.example.myfirstapplication
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
@@ -15,9 +16,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myfirstapplication.databinding.ActivityMainBinding
 import java.math.BigDecimal
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CustomAdapter.OnItemClickListener {
     private lateinit var binding: ActivityMainBinding
+    private val tasks = ArrayList<Task>()
+    private val adapter = CustomAdapter(tasks, this)
     private var launcher: ActivityResultLauncher<Intent>? = null
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
@@ -27,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
-        val tasks = ArrayList<Task>()
+
 
         launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
@@ -42,9 +46,14 @@ class MainActivity : AppCompatActivity() {
             launcher?.launch(Intent(this, CreatingTaskActivity::class.java))
         }
 
-        val adapter = CustomAdapter(tasks)
+
         adapter.notifyDataSetChanged()
         recyclerView.adapter = adapter
 
+    }
+
+    override fun onItemClick(position: Int){
+        tasks.removeAt(position)
+        adapter.notifyItemRemoved(position)
     }
 }

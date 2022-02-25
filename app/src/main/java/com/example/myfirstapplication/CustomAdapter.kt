@@ -3,10 +3,12 @@ package com.example.myfirstapplication
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class CustomAdapter(val tasksList:ArrayList<Task>): RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+class CustomAdapter(val tasksList:ArrayList<Task>, private val listener: OnItemClickListener): RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomAdapter.ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_item, parent, false)
@@ -22,7 +24,7 @@ class CustomAdapter(val tasksList:ArrayList<Task>): RecyclerView.Adapter<CustomA
         return tasksList.size
     }
 
-    class  ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         fun bindItems(task: Task){
             val textViewTaskName = itemView.findViewById(R.id.textViewTaskName) as TextView
@@ -31,11 +33,18 @@ class CustomAdapter(val tasksList:ArrayList<Task>): RecyclerView.Adapter<CustomA
             textViewTaskDescription.text = task.taskDescription
         }
 
+        init{
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(p0: View?) {
+            val position = adapterPosition
+            if (position != RecyclerView.NO_POSITION){
+                listener.onItemClick(position)
+            }
+        }
     }
-
-    fun addTask(){
-        notifyDataSetChanged()
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
     }
-
-
 }
